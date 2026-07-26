@@ -1,0 +1,52 @@
+{
+  "waterTarget": 8,
+  "blocks": [
+    {
+      "id": "morning",
+      "label": "MORNING BLOCK",
+      "eyebrow": "0600 — 0900",
+      "tasks": [
+        { "id": "wake_water",  "title": "Glass of water on waking", "detail": "Before the phone. Rehydrate first.", "time": "06:30", "icon": "water",  "core": true },
+        { "id": "brush_am",    "title": "Brush teeth",              "detail": "2 minutes. Tongue too.",            "time": "07:10", "icon": "tooth",  "core": true },
+        { "id": "shower",      "title": "Shower",                   "detail": "Cold finish — 30 seconds.",         "time": "07:15", "icon": "shower", "core": true },
+        { "id": "skincare_am", "title": "Face wash + moisturizer",  "detail": "SPF if you're going out.",          "time": "07:30", "icon": "face",   "core": false },
+        { "id": "bed",         "title": "Make the bed",             "detail": "First win of the day.",             "time": "07:40", "icon": "bed",    "core": false }
+      ]
+    },
+    {
+      "id": "day",
+      "label": "DAY BLOCK",
+      "eyebrow": "0900 — 1800",
+      "tasks": [
+        { "id": "water_mid", "title": "Hit 4 glasses by 1400",    "detail": "Track it on the water bar.",        "time": "12:00", "icon": "water", "core": true },
+        { "id": "move",      "title": "Move 20 minutes",          "detail": "Walk, stretch, or lift. Non-zero.", "time": "15:00", "icon": "move",  "core": true },
+        { "id": "posture",   "title": "Posture + shoulders back", "detail": "Reset. Unclench the jaw.",          "time": "16:30", "icon": "spine", "core": false }
+      ]
+    },
+    {
+      "id": "evening",
+      "label": "EVENING BLOCK",
+      "eyebrow": "2000 — 2300",
+      "tasks": [
+        { "id": "floss",       "title": "Floss",          "detail": "The one everyone skips. Not you.", "time": "22:00", "icon": "floss", "core": true },
+        { "id": "brush_pm",    "title": "Brush teeth",    "detail": "Last thing before bed.",           "time": "22:05", "icon": "tooth", "core": true },
+        { "id": "skincare_pm", "title": "Night skincare", "detail": "Wash the day off.",                "time": "22:10", "icon": "face",  "core": false },
+        { "id": "prep",        "title": "Prep tomorrow",  "detail": "Clothes out. Top 3 written.",      "time": "22:20", "icon": "note",  "core": false }
+      ]
+    }
+  ],
+  "maintenance": [
+    { "id": "nails",  "title": "Cut + clean nails", "detail": "Hands and feet. 10 minutes.", "intervalDays": 7, "anchor": "2026-01-01", "time": "18:00", "icon": "nails" },
+    { "id": "sheets", "title": "Change sheets",     "detail": "Fresh sheets, better sleep.", "intervalDays": 7, "anchor": "2026-01-01", "time": "11:00", "icon": "bed" }
+  ],
+  "waterNudges": ["10:30", "13:30", "16:00", "19:00"],
+  "mantras": [
+    "Discipline is choosing what you want most over what you want now.",
+    "You don't rise to goals. You fall to systems. This is the system.",
+    "Small things done daily beat big things done rarely.",
+    "Standards, not moods. Moods lie before 9am.",
+    "Win the morning and the day has no choice.",
+    "Consistency is a superpower precisely because it's rare.",
+    "The streak is the proof. Protect it."
+  ]
+}

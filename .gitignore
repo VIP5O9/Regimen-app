@@ -1,0 +1,28 @@
+node_modules/
+
+# Your machine, your business — none of this is ever committed.
+# Note: git has no trailing-comment syntax, so every comment gets its own line.
+.env
+
+# your routine: meds, grooming, times. Ships as data/regimen.example.json
+data/regimen.json
+
+# today + 90 days of history
+data/state.json
+
+# push subscriptions
+data/subs.json
+
+# push keypair — private key
+data/vapid.json
+
+# API access token
+data/token.json
+
+data/server.log
+
+# recordings + transcripts, when no external dir is set
+data/voice-inbox/
+
+# whisper weights, downloaded on first voice memo (~150MB)
+data/models/

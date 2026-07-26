@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>REGIMEN</title>
+<meta name="description" content="The daily standard. Private routine engine.">
+<meta id="theme-color-dark" name="theme-color" content="#0A0B0D" media="(prefers-color-scheme: dark)">
+<meta id="theme-color-light" name="theme-color" content="#F6F4EF" media="(prefers-color-scheme: light)">
+<script>
+  /* theme before first paint — 'auto' leaves prefers-color-scheme in charge.
+     A forced theme must also pin the theme-color metas, or the iOS status
+     bar keeps following the system instead of the chosen mode. */
+  try {
+    var t = localStorage.getItem('regimen-theme');
+    if (t === 'light' || t === 'dark') {
+      document.documentElement.dataset.theme = t;
+      document.getElementById('theme-color-dark').media = t === 'dark' ? 'all' : 'not all';
+      document.getElementById('theme-color-light').media = t === 'light' ? 'all' : 'not all';
+    }
+  } catch (e) {}
+</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REGIMEN">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-water" viewBox="0 0 24 24"><path d="M12 3c3.5 4.4 6 7.6 6 10.6a6 6 0 1 1-12 0C6 10.6 8.5 7.4 12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24"><rect x="3.2" y="9" width="17.6" height="7.6" rx="3.8" fill="none" stroke="currentColor" stroke-width="1.7" transform="rotate(-35 12 12.8)"/><line x1="9.4" y1="9.2" x2="14.2" y2="16.2" stroke="currentColor" stroke-width="1.7" transform="rotate(-35 12 12.8) rotate(35 11.8 12.7)"/></symbol>
+    <symbol id="i-tooth" viewBox="0 0 24 24"><path d="M7.5 3.5c2 0 2.7 1 4.5 1s2.5-1 4.5-1c2.6 0 4 2.2 4 4.6 0 4.6-2.6 12.4-4.4 12.4-1.5 0-1.3-4.5-4.1-4.5s-2.6 4.5-4.1 4.5C6.1 20.5 3.5 12.7 3.5 8.1c0-2.4 1.4-4.6 4-4.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shower" viewBox="0 0 24 24"><path d="M4 21V6a3 3 0 0 1 3-3h1a3 3 0 0 1 3 3v1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 8h6M11 8a4.5 4.5 0 0 1 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="13" y1="16" x2="12.4" y2="18"/><line x1="16" y1="16.5" x2="15.7" y2="18.6"/><line x1="19" y1="16" x2="19.4" y2="18"/></g></symbol>
+    <symbol id="i-face" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.6 14.5c.9 1.1 2.1 1.7 3.4 1.7s2.5-.6 3.4-1.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9.2" cy="10" r="0.9" fill="currentColor"/><circle cx="14.8" cy="10" r="0.9" fill="currentColor"/></symbol>
+    <symbol id="i-spray" viewBox="0 0 24 24"><rect x="8" y="9" width="7" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 9V6.5h4V9M11.5 6.5V4.5h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><g stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="17.5" y1="4.5" x2="19.5" y2="4.5"/><line x1="17.2" y1="7" x2="19" y2="8"/><line x1="17.2" y1="2" x2="19" y2="1"/></g></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18v-7.5A2.5 2.5 0 0 1 5.5 8h13A2.5 2.5 0 0 1 21 10.5V18M3 15.5h18M3 18v1.5M21 18v1.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6.5 11.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-move" viewBox="0 0 24 24"><circle cx="16" cy="5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 21l1.5-5-3-2 1-5.5 4.5-1 2.5 3M12.8 8.6L8.5 10l-1.2 4M13 14.2 9.5 21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-spine" viewBox="0 0 24 24"><path d="M12 3v18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="9" y1="6" x2="15" y2="6"/><line x1="8.4" y1="10" x2="15.6" y2="10"/><line x1="8.4" y1="14" x2="15.6" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></g></symbol>
+    <symbol id="i-floss" viewBox="0 0 24 24"><circle cx="9" cy="9" r="5.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M13 13l7 7M9 6.6A2.4 2.4 0 0 1 11.4 9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="8.5" y1="8.5" x2="15.5" y2="8.5"/><line x1="8.5" y1="12" x2="15.5" y2="12"/><line x1="8.5" y1="15.5" x2="12.5" y2="15.5"/></g></symbol>
+    <symbol id="i-nails" viewBox="0 0 24 24"><path d="M8 21v-8.5C8 8 9.8 4 12 4s4 4 4 8.5V21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 16.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-hair" viewBox="0 0 24 24"><path d="M6 21V8a6 6 0 0 1 12 0v13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M6 12c2-1.5 4-4 4.5-6.5M18 12c-1.5-1-3-3-3.8-5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-razor" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 9v3M10 12h4l-1 8h-2l-1-8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path class="check-path" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5.5A6 6 0 0 1 12 4.5a6 6 0 0 1 6 6V16l1.5 2.5h-15L6 16z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 21a2.2 2.2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/></g></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2.8" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.5 8.5 0 0 1 9.6 4 8.5 8.5 0 1 0 20 14.4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.6a8.4 8.4 0 0 1 0 16.8z" fill="currentColor"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6.5" cy="6.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="6.5" cy="17.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.7 8.2L20 17M8.7 15.8L20 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="top-line">
+    <span class="eyebrow" id="date-line">— · —</span>
+    <div class="top-right">
+      <span class="streak-chip" id="streak-chip" hidden>
+        <span class="streak-dot"></span><span id="streak-n">0</span> DAY STREAK
+      </span>
+      <button class="theme-btn" id="theme-btn" type="button" aria-label="Theme: Auto">
+        <svg class="ic" aria-hidden="true"><use id="theme-use" href="#i-auto"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="blob" aria-hidden="true"></div>
+    <canvas id="hero-fx" aria-hidden="true"></canvas>
+    <h1 class="hero-title">The daily<br><em>standard.</em></h1>
+
+    <div class="dial-wrap">
+      <svg class="dial" viewBox="0 0 200 200" role="img" aria-label="Momentum">
+        <circle class="dial-track" cx="100" cy="100" r="86"/>
+        <circle class="dial-fill" id="dial-fill" cx="100" cy="100" r="86"/>
+      </svg>
+      <div class="dial-center">
+        <div class="dial-pct"><span id="momentum">0</span><span class="dial-sym">%</span></div>
+        <div class="dial-label">MOMENTUM</div>
+      </div>
+    </div>
+
+    <p class="mantra" id="mantra"></p>
+  </section>
+
+  <!-- WATER -->
+  <section class="panel water-panel" id="sec-water">
+    <div class="panel-head">
+      <span class="eyebrow">HYDRATION</span>
+      <span class="mono-count"><span id="water-n">0</span>/<span id="water-t">8</span></span>
+    </div>
+    <div class="water-bar" id="water-bar" role="group" aria-label="Water glasses"></div>
+    <div class="water-actions">
+      <button class="ghost-btn" id="water-minus" aria-label="Remove a glass">−</button>
+      <button class="amber-btn" id="water-plus">+ GLASS</button>
+    </div>
+  </section>
+
+  <!-- BLOCKS (rendered by JS) -->
+  <div id="blocks"></div>
+
+  <!-- MAINTENANCE -->
+  <section class="panel" id="sec-upkeep">
+    <div class="panel-head">
+      <span class="eyebrow">UPKEEP — THE DETAILS</span>
+    </div>
+    <div class="maint-row" id="maint-row"></div>
+  </section>
+
+  <!-- LAST 14 DAYS -->
+  <section class="panel" id="sec-history">
+    <div class="panel-head"><span class="eyebrow">LAST 14 DAYS</span>
+      <span class="mono-count">BEST <span id="best-n">0</span>d</span></div>
+    <div class="spark" id="spark"></div>
+  </section>
+
+  <div class="foot-quote">
+    <p>“We are what we repeatedly do.<br>Excellence, then, is not an act, but a habit.”</p>
+    <span class="eyebrow">— WILL DURANT, ON ARISTOTLE</span>
+  </div>
+
+  <div class="dock-spacer"></div>
+</main>
+
+<!-- INSTALL BANNER (shown in Safari, hidden when standalone) -->
+<div class="install-tip" id="install-tip" hidden>
+  <strong>Install it:</strong> tap <span class="share-glyph">⬆</span> Share → <em>Add to Home Screen</em>.
+  Reminders only work from the installed app.
+</div>
+
+<!-- VOICE SHEET -->
+<div class="sheet-scrim" id="voice-scrim" hidden></div>
+<div class="sheet" id="voice-sheet" role="dialog" aria-modal="true" aria-label="Voice memo" hidden>
+  <div class="sheet-grip" aria-hidden="true"></div>
+  <div class="sheet-head">
+    <span class="eyebrow">VOICE MEMO</span>
+    <button class="sheet-close" id="voice-close" aria-label="Close">✕</button>
+  </div>
+  <button class="rec-btn" id="rec-btn" aria-label="Start recording">
+    <span class="rec-ring" aria-hidden="true"></span>
+    <span class="rec-core" aria-hidden="true"></span>
+  </button>
+  <div class="rec-timer" id="rec-timer">0:00</div>
+  <p class="rec-status" id="rec-status">Tap to record. Tap again to save it to the vault.</p>
+</div>
+
+<!-- DOCK -->
+<nav class="dock" aria-label="Sections">
+  <button class="dock-btn active" data-target="hero"><svg class="ic"><use href="#i-sun"/></svg><span>Today</span></button>
+  <button class="dock-btn" data-target="sec-upkeep"><svg class="ic"><use href="#i-scissors"/></svg><span>Upkeep</span></button>
+  <button class="dock-btn" id="voice-btn"><svg class="ic"><use href="#i-mic"/></svg><span>Voice</span></button>
+  <button class="dock-btn" id="bell-btn"><svg class="ic"><use href="#i-bell"/></svg><span id="bell-label">Arm</span></button>
+</nav>
+
+<script src="/app.js"></script>
+</body>
+</html>

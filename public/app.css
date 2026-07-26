@@ -1,0 +1,628 @@
+/* ============================================================
+   REGIMEN — Midnight Editorial (default)  ·  Daylight Editorial (light)
+   Ink-black canvas · New York serif display · phosphor amber
+   Every themeable value lives in a token below; the light theme
+   is a pure token swap in the @media block near the bottom.
+   ============================================================ */
+
+:root {
+  /* ---- surface & type ---- */
+  --ink: #0A0B0D;               /* canvas */
+  --ink-2: #101216;
+  --paper: #F2EFE9;             /* primary text */
+  --paper-dim: rgba(242, 239, 233, 0.55);
+  --paper-faint: rgba(242, 239, 233, 0.28);
+  --meta: rgba(242, 239, 233, 0.28);   /* metadata that must stay readable */
+  --canvas: radial-gradient(120% 60% at 50% -10%, #14161b 0%, var(--ink) 55%);
+  --card: rgba(255, 255, 255, 0.045);
+  --card-edge: rgba(255, 255, 255, 0.08);
+  --card-done: rgba(255, 255, 255, 0.02);
+  --card-done-edge: rgba(255, 255, 255, 0.04);
+  --btn-edge: rgba(255, 255, 255, 0.08);
+  --check-edge: rgba(255, 255, 255, 0.22);
+  --track: rgba(255, 255, 255, 0.07);
+  --bar-bg: rgba(255, 255, 255, 0.1);
+  --seg-bg: rgba(255, 255, 255, 0.05);
+  --seg-edge: rgba(255, 255, 255, 0.07);
+
+  /* ---- accent ---- */
+  --amber: #FFAB2E;             /* fills, strokes, chips */
+  --amber-text: #FFAB2E;        /* amber used AS text */
+  --on-amber: #0A0B0D;          /* always-dark ink on an amber fill */
+  --amber-soft: rgba(255, 171, 46, 0.14);
+  --amber-edge: rgba(255, 171, 46, 0.25);
+  --amber-edge-strong: rgba(255, 171, 46, 0.45);
+  --strike: rgba(255, 171, 46, 0.5);
+  --good: #7BD88F;
+
+  /* ---- texture ---- */
+  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.5;
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #1d2026 0%, #14161a 70%);
+  --spine: linear-gradient(180deg, rgba(255, 171, 46, 0.5), rgba(255, 255, 255, 0.06));
+  --water-fill: linear-gradient(180deg, #3D6B8A 0%, #2C4E66 100%);
+  --water-fill-edge: rgba(120, 180, 220, 0.35);
+
+  /* ---- depth ---- */
+  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.35);
+  --shadow-item: none;          /* light mode floats task/maint cards */
+  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.5);
+  --glow-dial: drop-shadow(0 0 6px rgba(255, 171, 46, 0.45));
+  --glow-node: 0 0 10px rgba(255, 171, 46, 0.5);
+  --glow-bar: 0 0 8px rgba(255, 171, 46, 0.3);
+  --dock-bg: rgba(16, 18, 22, 0.72);
+  --dock-edge: rgba(255, 255, 255, 0.09);
+  --dock-pill: rgba(255, 255, 255, 0.09);
+  --maint-done-opacity: 0.55;
+
+  /* ---- type & motion ---- */
+  --serif: ui-serif, "New York", Georgia, "Times New Roman", serif;
+  --sans: -apple-system, system-ui, "SF Pro Text", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --r-card: 22px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { background: var(--ink); overflow-x: hidden; }
+
+body {
+  font-family: var(--sans);
+  background: var(--canvas);
+  color: var(--paper);
+  min-height: 100dvh;
+  overflow-x: hidden;          /* the hero blob bleeds past the viewport — never let it scroll */
+  overscroll-behavior: none;   /* both axes: no rubber-band that strands the page off-centre */
+  -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) 0 0;
+}
+
+/* film grain — editorial texture, extremely subtle */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 40;
+  opacity: var(--grain-opacity);
+  background-image: var(--grain-img);
+}
+
+/* ---------- type utilities ---------- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--paper-faint);
+}
+.mono-count { font-family: var(--mono); font-size: 12px; color: var(--paper-dim); letter-spacing: 0.06em; }
+
+/* ---------- header ---------- */
+.top { padding: 14px 22px 0; }
+.top-line { display: flex; justify-content: space-between; align-items: center; }
+/* chip + theme toggle ride together on the right; the toggle holds its place
+   on the (common) days the streak chip is hidden */
+.top-right { display: flex; align-items: center; gap: 8px; }
+.theme-btn {
+  display: grid; place-content: center; flex: none;
+  width: 32px; height: 32px; padding: 0;
+  background: var(--card); border: 1px solid var(--card-edge); border-radius: 999px;
+  color: var(--paper); cursor: pointer;
+  transition: color 200ms var(--ease-out), background 200ms var(--ease-out), transform 140ms var(--ease-out);
+}
+.theme-btn:active { transform: scale(0.92); background: var(--card-done); }
+.theme-btn .ic { width: 17px; height: 17px; }
+.streak-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--amber-text); background: var(--amber-soft);
+  border: 1px solid var(--amber-edge);
+  padding: 5px 10px; border-radius: 999px;
+}
+.streak-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber);
+  animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ---------- main ---------- */
+main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
+
+/* ---------- hero ---------- */
+/* clip the X axis only: the blob may still bleed above the hero (overflow-y stays
+   visible — `clip` + `visible` is the one legal mixed pair, neither computes to
+   auto), but it can never add horizontal scroll extent. The clip margin is wider
+   than the blob's -70px offset, so nothing that used to be visible is cut. */
+.hero {
+  position: relative; padding: 34px 4px 10px;
+  overflow-x: clip; overflow-y: visible;
+  overflow-clip-margin: 90px;
+}
+
+.blob {
+  /* starts at the hero's own top edge (0), never above it — a negative
+     value here used to reach up into the header row and crowd the streak
+     chip / theme toggle, even though it painted behind them (z-index -1) */
+  position: absolute; top: 4px; right: -70px; width: 210px; height: 195px;
+  background: var(--blob-bg);
+  border-radius: 58% 42% 55% 45% / 52% 48% 52% 48%;  /* static: the resting shape */
+  filter: blur(2px);
+  z-index: -1;
+  will-change: transform;
+  animation: blob-drift 14s ease-in-out infinite alternate;
+}
+/* transform only — animating border-radius here repainted the blob every frame,
+   forever. The rotate/scale drift keeps the same "alive" read for free. */
+@keyframes blob-drift {
+  from { transform: rotate(0deg) scale(1); }
+  to   { transform: rotate(8deg) scale(1.06); }
+}
+
+/* ambient constellation field — sized to the hero box, drawn in app.js */
+#hero-fx {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: -1; pointer-events: none;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 11vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.hero-title em { font-style: italic; color: var(--amber-text); }
+
+/* momentum dial */
+.dial-wrap { position: relative; width: 200px; margin: 26px auto 6px; }
+.dial { width: 100%; transform: rotate(-90deg); display: block; }
+.dial-track { fill: none; stroke: var(--track); stroke-width: 10; }
+.dial-fill {
+  fill: none; stroke: var(--amber); stroke-width: 10; stroke-linecap: round;
+  stroke-dasharray: 540.35; stroke-dashoffset: 540.35;
+  transition: stroke-dashoffset 700ms var(--ease-out);
+  filter: var(--glow-dial);
+  will-change: stroke-dashoffset;   /* the property it actually animates */
+}
+.dial-center {
+  position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
+}
+.dial-pct { font-family: var(--serif); font-size: 52px; font-weight: 600; letter-spacing: -0.03em; }
+.dial-sym { font-size: 26px; color: var(--paper-dim); margin-left: 2px; }
+.dial-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.28em; color: var(--paper-faint); margin-top: 2px; }
+
+.mantra {
+  font-family: var(--serif); font-style: italic;
+  font-size: 17px; line-height: 1.45; color: var(--paper-dim);
+  text-align: center; max-width: 34ch; margin: 14px auto 0;
+}
+
+/* ---------- panels ---------- */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--r-card);
+  padding: 18px;
+  margin-top: 18px;
+  box-shadow: var(--shadow-card);
+}
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+
+/* ---------- water ---------- */
+.water-bar { display: flex; gap: 6px; }
+.water-seg {
+  flex: 1; height: 34px; border-radius: 9px;
+  background: var(--seg-bg);
+  border: 1px solid var(--seg-edge);
+  will-change: transform;
+  transition: background 240ms var(--ease-out), border-color 240ms var(--ease-out), transform 200ms var(--ease-spring);
+}
+.water-seg.full {
+  background: var(--water-fill);
+  border-color: var(--water-fill-edge);
+}
+.water-seg.just-filled { transform: scale(1.12); }
+.water-actions { display: flex; gap: 10px; margin-top: 14px; }
+.ghost-btn {
+  font-family: var(--mono); font-size: 16px; color: var(--paper-dim);
+  background: transparent; border: 1px solid var(--btn-edge); border-radius: 12px;
+  width: 52px; height: 44px; cursor: pointer;
+  transition: transform 140ms var(--ease-out), background 140ms;
+}
+.amber-btn {
+  flex: 1; font-family: var(--mono); font-size: 13px; letter-spacing: 0.12em;
+  color: var(--on-amber); background: var(--amber); border: none; border-radius: 12px;
+  height: 44px; cursor: pointer; font-weight: 700;
+  transition: transform 140ms var(--ease-out), filter 140ms;
+}
+.ghost-btn:active, .amber-btn:active { transform: scale(0.96); }
+
+/* ---------- blocks & the spine ---------- */
+.block { position: relative; margin-top: 26px; padding-left: 22px; }
+.block::before { /* the spine */
+  content: ""; position: absolute; left: 5px; top: 34px; bottom: 6px; width: 1px;
+  background: var(--spine);
+}
+.block-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; }
+.block-node {
+  position: absolute; left: -21px; top: 4px; width: 11px; height: 11px; border-radius: 50%;
+  border: 1.5px solid var(--paper-faint); background: var(--ink);
+  transition: border-color 300ms, background 300ms, box-shadow 300ms;
+}
+.block.block-done .block-node {
+  border-color: var(--amber); background: var(--amber);
+  box-shadow: var(--glow-node);
+}
+.block-title { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.block-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--paper-faint); }
+
+/* task card */
+.task {
+  display: flex; align-items: center; gap: 13px;
+  background: var(--card); border: 1px solid var(--card-edge);
+  border-radius: 17px; padding: 13px 14px; margin-bottom: 9px;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  box-shadow: var(--shadow-item);
+  transition: transform 160ms var(--ease-out), background 240ms, border-color 240ms, opacity 240ms;
+}
+.task:active { transform: scale(0.975); }
+.task-ic { width: 21px; height: 21px; color: var(--paper-dim); flex: none; transition: color 240ms; }
+.task-body { flex: 1; min-width: 0; }
+.task-title { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; transition: color 240ms; }
+.task-detail { font-size: 12px; color: var(--meta); margin-top: 2px; }
+.task-time { font-family: var(--mono); font-size: 11px; color: var(--meta); flex: none; }
+
+.task-check {
+  width: 27px; height: 27px; border-radius: 9px; flex: none;
+  border: 1.5px solid var(--check-edge);
+  display: grid; place-content: center; color: var(--on-amber);
+  will-change: transform;
+  transition: background 200ms var(--ease-out), border-color 200ms, transform 220ms var(--ease-spring);
+}
+.task-check .ic { width: 15px; height: 15px; opacity: 0; }
+.task-check .check-path { stroke-dasharray: 22; stroke-dashoffset: 22; }
+
+.task.done { background: var(--card-done); border-color: var(--card-done-edge); box-shadow: none; }
+.task.done .task-title { color: var(--paper-faint); text-decoration: line-through; text-decoration-color: var(--strike); text-decoration-thickness: 1px; }
+.task.done .task-ic { color: var(--paper-faint); opacity: 0.5; }
+.task.done .task-check { background: var(--amber); border-color: var(--amber); }
+.task.done .task-check .ic { opacity: 1; }
+.task.done .task-check .check-path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 260ms var(--ease-out) 40ms;
+}
+.task.just-done .task-check { transform: scale(1.15); }
+
+/* ---------- maintenance ---------- */
+.maint-row {
+  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  margin: 0 -18px; padding-left: 18px; padding-right: 18px;
+}
+.maint-row::-webkit-scrollbar { display: none; }
+.maint {
+  flex: none; width: 148px;
+  background: var(--card); border: 1px solid var(--card-edge);
+  border-radius: 17px; padding: 14px; cursor: pointer;
+  box-shadow: var(--shadow-item);
+  transition: transform 160ms var(--ease-out), border-color 240ms, background 240ms;
+}
+.maint:active { transform: scale(0.96); }
+.maint-ic { width: 20px; height: 20px; color: var(--paper-dim); margin-bottom: 10px; }
+.maint-title { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+.maint-due {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--meta); margin-top: 8px;
+}
+.maint.due-now { border-color: var(--amber-edge-strong); background: var(--amber-soft); }
+.maint.due-now .maint-due { color: var(--amber-text); }
+.maint.done-today { opacity: var(--maint-done-opacity); }
+.maint.done-today .maint-due { color: var(--good); }
+
+/* ---------- history spark ---------- */
+.spark { display: flex; align-items: flex-end; gap: 5px; height: 56px; }
+.spark-bar {
+  flex: 1; min-height: 3px; border-radius: 3px 3px 1px 1px;
+  background: var(--bar-bg);
+  transition: height 600ms var(--ease-out);
+}
+.spark-bar.hit { background: var(--amber); box-shadow: var(--glow-bar); }
+
+/* ---------- footer quote ---------- */
+.foot-quote { text-align: center; padding: 44px 20px 10px; }
+.foot-quote p {
+  font-family: var(--serif); font-style: italic; font-size: 16px;
+  line-height: 1.5; color: var(--meta); margin-bottom: 8px;
+}
+
+/* ---------- dock ---------- */
+.dock-spacer { height: 106px; }
+.dock {
+  position: fixed; bottom: calc(14px + env(safe-area-inset-bottom)); left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 4px; padding: 6px;
+  background: var(--dock-bg);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid var(--dock-edge);
+  border-radius: 999px; z-index: 50;
+  box-shadow: var(--shadow-dock);
+}
+.dock-btn {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  color: var(--paper-dim); background: transparent; border: none;
+  padding: 10px 14px; border-radius: 999px; cursor: pointer;
+  transition: background 200ms var(--ease-out), color 200ms, transform 140ms var(--ease-out);
+}
+/* four buttons have to clear a 375px phone */
+@media (max-width: 390px) { .dock-btn { padding: 10px 11px; gap: 5px; } }
+.dock-btn:active { transform: scale(0.94); }
+.dock-btn.active { background: var(--dock-pill); color: var(--paper); }
+.dock-btn.armed { color: var(--amber-text); }
+.dock-btn .ic { width: 16px; height: 16px; }
+.ic { display: block; }
+
+/* ---------- install tip ---------- */
+.install-tip {
+  position: fixed; bottom: calc(84px + env(safe-area-inset-bottom)); left: 18px; right: 18px;
+  background: var(--paper); color: var(--ink);
+  font-size: 13px; line-height: 1.45;
+  border-radius: 14px; padding: 12px 15px; z-index: 60;
+  box-shadow: var(--shadow-pop);
+}
+.share-glyph { display: inline-block; transform: translateY(-1px); }
+
+/* ---------- voice sheet ---------- */
+.sheet-scrim {
+  position: fixed; inset: 0; z-index: 70;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0; transition: opacity 260ms var(--ease-out);
+}
+.sheet-scrim.open { opacity: 1; }
+
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 71;
+  max-width: 520px; margin: 0 auto;
+  padding: 12px 22px calc(26px + env(safe-area-inset-bottom));
+  background: var(--dock-bg);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid var(--dock-edge); border-bottom: none;
+  border-radius: 26px 26px 0 0;
+  box-shadow: var(--shadow-dock);
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform 320ms var(--ease-out);
+}
+.sheet.open { transform: translateY(0); }
+.sheet-grip {
+  width: 38px; height: 4px; border-radius: 999px;
+  background: var(--paper-faint); margin: 0 auto 12px;
+}
+.sheet-head { display: flex; justify-content: space-between; align-items: center; }
+.sheet-close {
+  font-size: 15px; line-height: 1; color: var(--paper-dim);
+  background: transparent; border: none; cursor: pointer; padding: 4px 2px;
+}
+
+.rec-btn {
+  position: relative; width: 92px; height: 92px; margin: 22px auto 0;
+  display: grid; place-content: center;
+  background: transparent; border: 1.5px solid var(--btn-edge);
+  border-radius: 50%; cursor: pointer;
+  transition: transform 140ms var(--ease-out), border-color 240ms;
+}
+.rec-btn:active { transform: scale(0.96); }
+.rec-btn:disabled { opacity: 0.5; cursor: default; }
+.rec-core {
+  display: block; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--amber);
+  transition: width 260ms var(--ease-spring), height 260ms var(--ease-spring),
+              border-radius 260ms var(--ease-out);
+}
+.rec-ring {
+  position: absolute; inset: -5px; border-radius: 50%;
+  border: 2px solid var(--amber); opacity: 0;
+}
+.rec-btn.recording { border-color: var(--amber-edge-strong); }
+.rec-btn.recording .rec-core { width: 28px; height: 28px; border-radius: 7px; }
+.rec-btn.recording .rec-ring { animation: rec-pulse 1.8s var(--ease-out) infinite; }
+@keyframes rec-pulse {
+  0%   { opacity: 0.55; transform: scale(1); }
+  70%  { opacity: 0; transform: scale(1.22); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
+
+.rec-timer {
+  font-family: var(--mono); font-size: 22px; letter-spacing: 0.06em;
+  color: var(--paper); margin-top: 14px;
+}
+.rec-status {
+  font-size: 13px; line-height: 1.45; color: var(--paper-dim);
+  max-width: 32ch; margin: 8px auto 0; min-height: 2.9em;
+}
+.rec-status.ok { color: var(--amber-text); }
+.rec-status.err { color: var(--paper); }
+
+/* ---------- entrance ---------- */
+.reveal { opacity: 0; transform: translateY(10px); }
+.reveal.in {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 480ms var(--ease-out), transform 480ms var(--ease-out);
+}
+
+/* ============================================================
+   DAYLIGHT EDITORIAL — system default, overridable by the header toggle
+   Warm paper canvas · near-black ink · floating white cards
+
+   Three blocks, one token set:
+     1. @media light + :root:not([data-theme])  → "Auto" follows the system
+     2. :root[data-theme="light"]               → forced light
+     3. :root[data-theme="dark"]                → forced dark (must out-rank
+        block 1 when the system is light, hence the verbatim re-declaration)
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    /* ---- surface & type (ink/paper swap: ink = canvas, paper = text) ---- */
+    --ink: #F6F4EF;
+    --ink-2: #EFECE4;
+    --paper: #16171A;
+    --paper-dim: rgba(22, 23, 26, 0.60);
+    --paper-faint: rgba(22, 23, 26, 0.50);
+    --meta: rgba(22, 23, 26, 0.68);
+    --canvas: radial-gradient(120% 60% at 50% -10%, #FFFDF7 0%, var(--ink) 55%);
+    --card: #FFFFFF;
+    --card-edge: rgba(0, 0, 0, 0.06);
+    --card-done: rgba(255, 255, 255, 0.55);
+    --card-done-edge: rgba(0, 0, 0, 0.05);
+    --btn-edge: rgba(0, 0, 0, 0.14);
+    --check-edge: rgba(22, 23, 26, 0.55);
+    --track: rgba(0, 0, 0, 0.10);
+    --bar-bg: rgba(0, 0, 0, 0.08);
+    --seg-bg: rgba(0, 0, 0, 0.045);
+    --seg-edge: rgba(0, 0, 0, 0.08);
+
+    /* ---- accent ---- */
+    --amber: #E29200;
+    --amber-text: #8F5600;      /* deeper: amber as TEXT on paper/white */
+    --on-amber: #0A0B0D;        /* unchanged — dark ink on an amber fill */
+    --amber-soft: rgba(226, 146, 0, 0.14);
+    --amber-edge: rgba(226, 146, 0, 0.35);
+    --amber-edge-strong: rgba(226, 146, 0, 0.50);
+    --strike: rgba(226, 146, 0, 0.75);
+    --good: #2E7D4F;
+
+    /* ---- texture ---- */
+    --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain-opacity: 0.25;
+    --blob-bg: radial-gradient(60% 60% at 40% 40%, #EDE9E0 0%, #E4DFD3 70%);
+    --spine: linear-gradient(180deg, rgba(226, 146, 0, 0.6), rgba(0, 0, 0, 0.08));
+    --water-fill: linear-gradient(180deg, #8FC0E0 0%, #6AA0C8 100%);
+    --water-fill-edge: rgba(70, 130, 180, 0.35);
+
+    /* ---- depth: ref-2 floating cards, soft diffuse shadows ---- */
+    --shadow-card: 0 10px 30px rgba(20, 23, 26, 0.08);
+    --shadow-item: 0 4px 14px rgba(20, 23, 26, 0.06);
+    --shadow-dock: 0 14px 34px rgba(20, 23, 26, 0.14);
+    --shadow-pop: 0 16px 36px rgba(20, 23, 26, 0.22);
+    /* neutral edge instead of an amber halo: amber-on-paper is low-luminance,
+       the soft dark shadow is what actually separates the ring from the canvas */
+    --glow-dial: drop-shadow(0 1px 2px rgba(20, 23, 26, 0.16));
+    --glow-node: 0 0 0 3px rgba(226, 146, 0, 0.16);
+    --glow-bar: none;
+    --dock-bg: rgba(255, 255, 255, 0.65);
+    --dock-edge: rgba(0, 0, 0, 0.08);
+    --dock-pill: rgba(0, 0, 0, 0.06);
+    --maint-done-opacity: 0.72;
+  }
+}
+
+/* forced LIGHT — identical tokens to the media block above */
+:root[data-theme="light"] {
+  --ink: #F6F4EF;
+  --ink-2: #EFECE4;
+  --paper: #16171A;
+  --paper-dim: rgba(22, 23, 26, 0.60);
+  --paper-faint: rgba(22, 23, 26, 0.50);
+  --meta: rgba(22, 23, 26, 0.68);
+  --canvas: radial-gradient(120% 60% at 50% -10%, #FFFDF7 0%, var(--ink) 55%);
+  --card: #FFFFFF;
+  --card-edge: rgba(0, 0, 0, 0.06);
+  --card-done: rgba(255, 255, 255, 0.55);
+  --card-done-edge: rgba(0, 0, 0, 0.05);
+  --btn-edge: rgba(0, 0, 0, 0.14);
+  --check-edge: rgba(22, 23, 26, 0.55);
+  --track: rgba(0, 0, 0, 0.10);
+  --bar-bg: rgba(0, 0, 0, 0.08);
+  --seg-bg: rgba(0, 0, 0, 0.045);
+  --seg-edge: rgba(0, 0, 0, 0.08);
+
+  --amber: #E29200;
+  --amber-text: #8F5600;
+  --on-amber: #0A0B0D;
+  --amber-soft: rgba(226, 146, 0, 0.14);
+  --amber-edge: rgba(226, 146, 0, 0.35);
+  --amber-edge-strong: rgba(226, 146, 0, 0.50);
+  --strike: rgba(226, 146, 0, 0.75);
+  --good: #2E7D4F;
+
+  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.25;
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #EDE9E0 0%, #E4DFD3 70%);
+  --spine: linear-gradient(180deg, rgba(226, 146, 0, 0.6), rgba(0, 0, 0, 0.08));
+  --water-fill: linear-gradient(180deg, #8FC0E0 0%, #6AA0C8 100%);
+  --water-fill-edge: rgba(70, 130, 180, 0.35);
+
+  --shadow-card: 0 10px 30px rgba(20, 23, 26, 0.08);
+  --shadow-item: 0 4px 14px rgba(20, 23, 26, 0.06);
+  --shadow-dock: 0 14px 34px rgba(20, 23, 26, 0.14);
+  --shadow-pop: 0 16px 36px rgba(20, 23, 26, 0.22);
+  --glow-dial: drop-shadow(0 1px 2px rgba(20, 23, 26, 0.16));
+  --glow-node: 0 0 0 3px rgba(226, 146, 0, 0.16);
+  --glow-bar: none;
+  --dock-bg: rgba(255, 255, 255, 0.65);
+  --dock-edge: rgba(0, 0, 0, 0.08);
+  --dock-pill: rgba(0, 0, 0, 0.06);
+  --maint-done-opacity: 0.72;
+}
+
+/* forced DARK — the top-of-file :root values, re-declared so they beat the
+   light media block on a light-mode system */
+:root[data-theme="dark"] {
+  --ink: #0A0B0D;
+  --ink-2: #101216;
+  --paper: #F2EFE9;
+  --paper-dim: rgba(242, 239, 233, 0.55);
+  --paper-faint: rgba(242, 239, 233, 0.28);
+  --meta: rgba(242, 239, 233, 0.28);
+  --canvas: radial-gradient(120% 60% at 50% -10%, #14161b 0%, var(--ink) 55%);
+  --card: rgba(255, 255, 255, 0.045);
+  --card-edge: rgba(255, 255, 255, 0.08);
+  --card-done: rgba(255, 255, 255, 0.02);
+  --card-done-edge: rgba(255, 255, 255, 0.04);
+  --btn-edge: rgba(255, 255, 255, 0.08);
+  --check-edge: rgba(255, 255, 255, 0.22);
+  --track: rgba(255, 255, 255, 0.07);
+  --bar-bg: rgba(255, 255, 255, 0.1);
+  --seg-bg: rgba(255, 255, 255, 0.05);
+  --seg-edge: rgba(255, 255, 255, 0.07);
+
+  --amber: #FFAB2E;
+  --amber-text: #FFAB2E;
+  --on-amber: #0A0B0D;
+  --amber-soft: rgba(255, 171, 46, 0.14);
+  --amber-edge: rgba(255, 171, 46, 0.25);
+  --amber-edge-strong: rgba(255, 171, 46, 0.45);
+  --strike: rgba(255, 171, 46, 0.5);
+  --good: #7BD88F;
+
+  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.5;
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #1d2026 0%, #14161a 70%);
+  --spine: linear-gradient(180deg, rgba(255, 171, 46, 0.5), rgba(255, 255, 255, 0.06));
+  --water-fill: linear-gradient(180deg, #3D6B8A 0%, #2C4E66 100%);
+  --water-fill-edge: rgba(120, 180, 220, 0.35);
+
+  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.35);
+  --shadow-item: none;
+  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.5);
+  --glow-dial: drop-shadow(0 0 6px rgba(255, 171, 46, 0.45));
+  --glow-node: 0 0 10px rgba(255, 171, 46, 0.5);
+  --glow-bar: 0 0 8px rgba(255, 171, 46, 0.3);
+  --dock-bg: rgba(16, 18, 22, 0.72);
+  --dock-edge: rgba(255, 255, 255, 0.09);
+  --dock-pill: rgba(255, 255, 255, 0.09);
+  --maint-done-opacity: 0.55;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none; }
+  .streak-dot { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .dial-fill { transition: stroke-dashoffset 200ms ease; }
+  .task, .maint, .dock-btn, .ghost-btn, .amber-btn { transition-duration: 80ms; }
+  .task:active, .maint:active, .dock-btn:active { transform: none; }
+  .rec-btn.recording .rec-ring { animation: none; opacity: 0.55; }
+  .sheet { transition-duration: 100ms; }
+  .rec-core { transition-duration: 100ms; }
+}
