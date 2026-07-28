@@ -1,59 +1,65 @@
 /* ============================================================
-   REGIMEN — Midnight Editorial (default)  ·  Daylight Editorial (light)
-   Ink-black canvas · New York serif display · phosphor amber
+   REGIMEN — PHOSPHOR (default dark)  ·  Daylight Phosphor (light)
+   Pure-black CRT canvas · strictly monochrome phosphor green ·
+   scanline texture · New York serif display for the brand voice,
+   mono for every piece of data.
    Every themeable value lives in a token below; the light theme
-   is a pure token swap in the @media block near the bottom.
+   is a pure token swap in the blocks near the bottom.
    ============================================================ */
 
 :root {
   /* ---- surface & type ---- */
-  --ink: #0A0B0D;               /* canvas */
-  --ink-2: #101216;
-  --paper: #F2EFE9;             /* primary text */
-  --paper-dim: rgba(242, 239, 233, 0.55);
-  --paper-faint: rgba(242, 239, 233, 0.28);
-  --meta: rgba(242, 239, 233, 0.28);   /* metadata that must stay readable */
-  --canvas: radial-gradient(120% 60% at 50% -10%, #14161b 0%, var(--ink) 55%);
-  --card: rgba(255, 255, 255, 0.045);
-  --card-edge: rgba(255, 255, 255, 0.08);
-  --card-done: rgba(255, 255, 255, 0.02);
-  --card-done-edge: rgba(255, 255, 255, 0.04);
-  --btn-edge: rgba(255, 255, 255, 0.08);
-  --check-edge: rgba(255, 255, 255, 0.22);
-  --track: rgba(255, 255, 255, 0.07);
-  --bar-bg: rgba(255, 255, 255, 0.1);
-  --seg-bg: rgba(255, 255, 255, 0.05);
-  --seg-edge: rgba(255, 255, 255, 0.07);
+  --ink: #000000;               /* canvas: true CRT black */
+  --ink-2: #050807;
+  --paper: #D9FBE9;             /* phosphor-white text, green-tinted */
+  --paper-dim: rgba(217, 251, 233, 0.55);
+  --paper-faint: rgba(217, 251, 233, 0.30);
+  --meta: rgba(217, 251, 233, 0.34);   /* metadata that must stay readable */
+  --canvas: radial-gradient(120% 60% at 50% -10%, #06110B 0%, var(--ink) 55%);
+  --card: rgba(0, 244, 142, 0.045);
+  --card-edge: rgba(0, 244, 142, 0.10);
+  --card-done: rgba(0, 244, 142, 0.02);
+  --card-done-edge: rgba(0, 244, 142, 0.05);
+  --btn-edge: rgba(0, 244, 142, 0.16);
+  --check-edge: rgba(217, 251, 233, 0.30);
+  --track: rgba(0, 244, 142, 0.08);
+  --bar-bg: rgba(0, 244, 142, 0.12);
+  --seg-bg: rgba(0, 244, 142, 0.05);
+  --seg-edge: rgba(0, 244, 142, 0.09);
 
-  /* ---- accent ---- */
-  --amber: #FFAB2E;             /* fills, strokes, chips */
-  --amber-text: #FFAB2E;        /* amber used AS text */
-  --on-amber: #0A0B0D;          /* always-dark ink on an amber fill */
-  --amber-soft: rgba(255, 171, 46, 0.14);
-  --amber-edge: rgba(255, 171, 46, 0.25);
-  --amber-edge-strong: rgba(255, 171, 46, 0.45);
-  --strike: rgba(255, 171, 46, 0.5);
-  --good: #7BD88F;
+  /* ---- accent: one phosphor green, nothing else ---- */
+  --amber: #00F48E;             /* fills, strokes, chips (token name kept: app.js reads it) */
+  --amber-hi: #00FF3C;          /* the hot tube: cursor, streak dot, dial pulse peak */
+  --amber-text: #00F48E;        /* green used AS text */
+  --on-amber: #000000;          /* always-black ink on a green fill */
+  --amber-soft: rgba(0, 244, 142, 0.10);
+  --amber-edge: rgba(0, 244, 142, 0.24);
+  --amber-edge-strong: rgba(0, 244, 142, 0.45);
+  --strike: rgba(0, 244, 142, 0.5);
+  --good: #00F48E;
 
-  /* ---- texture ---- */
-  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* ---- texture: scanlines, not film grain ---- */
+  --grain-img: repeating-linear-gradient(0deg, rgba(0, 244, 142, 0.05) 0 1px, transparent 1px 3px);
   --grain-opacity: 0.5;
-  --blob-bg: radial-gradient(60% 60% at 40% 40%, #1d2026 0%, #14161a 70%);
-  --spine: linear-gradient(180deg, rgba(255, 171, 46, 0.5), rgba(255, 255, 255, 0.06));
-  --water-fill: linear-gradient(180deg, #3D6B8A 0%, #2C4E66 100%);
-  --water-fill-edge: rgba(120, 180, 220, 0.35);
+  --sweep: rgba(0, 244, 142, 0.055);
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #0A1F14 0%, #04100A 70%);
+  --spine: linear-gradient(180deg, rgba(0, 244, 142, 0.5), rgba(217, 251, 233, 0.06));
+  --water-fill: linear-gradient(180deg, #0A8A50 0%, #054A2C 100%);
+  --water-fill-edge: rgba(0, 244, 142, 0.35);
 
-  /* ---- depth ---- */
-  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.35);
+  /* ---- depth & glow ---- */
+  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.55);
   --shadow-item: none;          /* light mode floats task/maint cards */
-  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.5);
-  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.5);
-  --glow-dial: drop-shadow(0 0 6px rgba(255, 171, 46, 0.45));
-  --glow-node: 0 0 10px rgba(255, 171, 46, 0.5);
-  --glow-bar: 0 0 8px rgba(255, 171, 46, 0.3);
-  --dock-bg: rgba(16, 18, 22, 0.72);
-  --dock-edge: rgba(255, 255, 255, 0.09);
-  --dock-pill: rgba(255, 255, 255, 0.09);
+  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.6);
+  --glow-dial: drop-shadow(0 0 6px rgba(0, 244, 142, 0.45));
+  --glow-dial-hot: drop-shadow(0 0 11px rgba(0, 255, 60, 0.6));
+  --glow-node: 0 0 10px rgba(0, 244, 142, 0.55);
+  --glow-bar: 0 0 8px rgba(0, 244, 142, 0.35);
+  --glow-text: 0 0 18px rgba(0, 244, 142, 0.35);
+  --dock-bg: rgba(3, 8, 6, 0.78);
+  --dock-edge: rgba(0, 244, 142, 0.14);
+  --dock-pill: rgba(0, 244, 142, 0.10);
   --maint-done-opacity: 0.55;
 
   /* ---- type & motion ---- */
@@ -80,11 +86,22 @@ body {
   padding: env(safe-area-inset-top) 0 0;
 }
 
-/* film grain — editorial texture, extremely subtle */
+/* CRT scanlines — the tube texture. A faint horizontal line raster plus one
+   slow sweep line drifting down the screen like a refresh artifact. */
 .grain {
   position: fixed; inset: 0; pointer-events: none; z-index: 40;
   opacity: var(--grain-opacity);
   background-image: var(--grain-img);
+}
+.grain::after {
+  content: ""; position: absolute; left: 0; right: 0; top: -20%;
+  height: 18%;
+  background: linear-gradient(180deg, transparent, var(--sweep) 55%, transparent);
+  animation: scan-sweep 9s linear infinite;
+}
+@keyframes scan-sweep {
+  from { transform: translateY(0); }
+  to   { transform: translateY(760%); }
 }
 
 /* ---------- type utilities ---------- */
@@ -95,6 +112,15 @@ body {
   color: var(--paper-faint);
 }
 .mono-count { font-family: var(--mono); font-size: 12px; color: var(--paper-dim); letter-spacing: 0.06em; }
+
+/* terminal cursor riding the date line */
+#date-line::after {
+  content: "▮";
+  margin-left: 7px;
+  color: var(--amber-hi, var(--amber));
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
 
 /* ---------- header ---------- */
 .top { padding: 14px 22px 0; }
@@ -118,7 +144,7 @@ body {
   border: 1px solid var(--amber-edge);
   padding: 5px 10px; border-radius: 999px;
 }
-.streak-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber);
+.streak-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber-hi, var(--amber));
   animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
@@ -168,7 +194,11 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
-.hero-title em { font-style: italic; color: var(--amber-text); }
+.hero-title em {
+  font-style: italic;
+  color: var(--amber-text);
+  text-shadow: var(--glow-text);   /* phosphor bloom on the brand word */
+}
 
 /* momentum dial */
 .dial-wrap { position: relative; width: 200px; margin: 26px auto 6px; }
@@ -179,7 +209,12 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
   stroke-dasharray: 540.35; stroke-dashoffset: 540.35;
   transition: stroke-dashoffset 700ms var(--ease-out);
   filter: var(--glow-dial);
+  animation: dial-breathe 3s ease-in-out infinite;
   will-change: stroke-dashoffset;   /* the property it actually animates */
+}
+@keyframes dial-breathe {
+  0%, 100% { filter: var(--glow-dial); }
+  50%      { filter: var(--glow-dial-hot); }
 }
 .dial-center {
   position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
@@ -217,6 +252,7 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 .water-seg.full {
   background: var(--water-fill);
   border-color: var(--water-fill-edge);
+  box-shadow: inset 0 0 8px rgba(0, 244, 142, 0.18);
 }
 .water-seg.just-filled { transform: scale(1.12); }
 .water-actions { display: flex; gap: 10px; margin-top: 14px; }
@@ -282,7 +318,7 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 .task.done { background: var(--card-done); border-color: var(--card-done-edge); box-shadow: none; }
 .task.done .task-title { color: var(--paper-faint); text-decoration: line-through; text-decoration-color: var(--strike); text-decoration-thickness: 1px; }
 .task.done .task-ic { color: var(--paper-faint); opacity: 0.5; }
-.task.done .task-check { background: var(--amber); border-color: var(--amber); }
+.task.done .task-check { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 10px rgba(0, 244, 142, 0.35); }
 .task.done .task-check .ic { opacity: 1; }
 .task.done .task-check .check-path {
   stroke-dashoffset: 0;
@@ -355,7 +391,7 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 /* four buttons have to clear a 375px phone */
 @media (max-width: 390px) { .dock-btn { padding: 10px 11px; gap: 5px; } }
 .dock-btn:active { transform: scale(0.94); }
-.dock-btn.active { background: var(--dock-pill); color: var(--paper); }
+.dock-btn.active { background: var(--dock-pill); color: var(--amber-text); }
 .dock-btn.armed { color: var(--amber-text); }
 .dock-btn .ic { width: 16px; height: 16px; }
 .ic { display: block; }
@@ -373,7 +409,7 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 /* ---------- voice sheet ---------- */
 .sheet-scrim {
   position: fixed; inset: 0; z-index: 70;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.5);
   opacity: 0; transition: opacity 260ms var(--ease-out);
 }
 .sheet-scrim.open { opacity: 1; }
@@ -450,8 +486,10 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 }
 
 /* ============================================================
-   DAYLIGHT EDITORIAL — system default, overridable by the header toggle
-   Warm paper canvas · near-black ink · floating white cards
+   DAYLIGHT PHOSPHOR — system default, overridable by the header toggle
+   Cool paper canvas · deep green-black ink · floating white cards.
+   Same tube, lights on: the palette is derived from the dark one
+   (same hue family, inverted lightness ladder), not a new invention.
 
    Three blocks, one token set:
      1. @media light + :root:not([data-theme])  → "Auto" follows the system
@@ -462,155 +500,165 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     /* ---- surface & type (ink/paper swap: ink = canvas, paper = text) ---- */
-    --ink: #F6F4EF;
-    --ink-2: #EFECE4;
-    --paper: #16171A;
-    --paper-dim: rgba(22, 23, 26, 0.60);
-    --paper-faint: rgba(22, 23, 26, 0.50);
-    --meta: rgba(22, 23, 26, 0.68);
-    --canvas: radial-gradient(120% 60% at 50% -10%, #FFFDF7 0%, var(--ink) 55%);
+    --ink: #F2F7F3;
+    --ink-2: #EAF2EC;
+    --paper: #0B2417;
+    --paper-dim: rgba(11, 36, 23, 0.62);
+    --paper-faint: rgba(11, 36, 23, 0.48);
+    --meta: rgba(11, 36, 23, 0.66);
+    --canvas: radial-gradient(120% 60% at 50% -10%, #FBFEFB 0%, var(--ink) 55%);
     --card: #FFFFFF;
-    --card-edge: rgba(0, 0, 0, 0.06);
+    --card-edge: rgba(0, 80, 40, 0.08);
     --card-done: rgba(255, 255, 255, 0.55);
-    --card-done-edge: rgba(0, 0, 0, 0.05);
-    --btn-edge: rgba(0, 0, 0, 0.14);
-    --check-edge: rgba(22, 23, 26, 0.55);
-    --track: rgba(0, 0, 0, 0.10);
-    --bar-bg: rgba(0, 0, 0, 0.08);
-    --seg-bg: rgba(0, 0, 0, 0.045);
-    --seg-edge: rgba(0, 0, 0, 0.08);
+    --card-done-edge: rgba(0, 80, 40, 0.06);
+    --btn-edge: rgba(0, 80, 40, 0.16);
+    --check-edge: rgba(11, 36, 23, 0.5);
+    --track: rgba(0, 80, 40, 0.10);
+    --bar-bg: rgba(0, 80, 40, 0.10);
+    --seg-bg: rgba(0, 80, 40, 0.05);
+    --seg-edge: rgba(0, 80, 40, 0.09);
 
     /* ---- accent ---- */
-    --amber: #E29200;
-    --amber-text: #8F5600;      /* deeper: amber as TEXT on paper/white */
-    --on-amber: #0A0B0D;        /* unchanged — dark ink on an amber fill */
-    --amber-soft: rgba(226, 146, 0, 0.14);
-    --amber-edge: rgba(226, 146, 0, 0.35);
-    --amber-edge-strong: rgba(226, 146, 0, 0.50);
-    --strike: rgba(226, 146, 0, 0.75);
-    --good: #2E7D4F;
+    --amber: #00A35C;
+    --amber-hi: #00C853;
+    --amber-text: #00753F;      /* deeper: green as TEXT on paper/white */
+    --on-amber: #FFFFFF;        /* white ink on a mid-green fill */
+    --amber-soft: rgba(0, 163, 92, 0.10);
+    --amber-edge: rgba(0, 163, 92, 0.30);
+    --amber-edge-strong: rgba(0, 163, 92, 0.48);
+    --strike: rgba(0, 163, 92, 0.7);
+    --good: #00753F;
 
     /* ---- texture ---- */
-    --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-    --grain-opacity: 0.25;
-    --blob-bg: radial-gradient(60% 60% at 40% 40%, #EDE9E0 0%, #E4DFD3 70%);
-    --spine: linear-gradient(180deg, rgba(226, 146, 0, 0.6), rgba(0, 0, 0, 0.08));
-    --water-fill: linear-gradient(180deg, #8FC0E0 0%, #6AA0C8 100%);
-    --water-fill-edge: rgba(70, 130, 180, 0.35);
+    --grain-img: repeating-linear-gradient(0deg, rgba(0, 80, 40, 0.05) 0 1px, transparent 1px 3px);
+    --grain-opacity: 0.35;
+    --sweep: rgba(0, 80, 40, 0.04);
+    --blob-bg: radial-gradient(60% 60% at 40% 40%, #DFF0E5 0%, #CFE7D8 70%);
+    --spine: linear-gradient(180deg, rgba(0, 163, 92, 0.55), rgba(0, 80, 40, 0.08));
+    --water-fill: linear-gradient(180deg, #4CC98A 0%, #2EA468 100%);
+    --water-fill-edge: rgba(0, 130, 70, 0.35);
 
-    /* ---- depth: ref-2 floating cards, soft diffuse shadows ---- */
-    --shadow-card: 0 10px 30px rgba(20, 23, 26, 0.08);
-    --shadow-item: 0 4px 14px rgba(20, 23, 26, 0.06);
-    --shadow-dock: 0 14px 34px rgba(20, 23, 26, 0.14);
-    --shadow-pop: 0 16px 36px rgba(20, 23, 26, 0.22);
-    /* neutral edge instead of an amber halo: amber-on-paper is low-luminance,
-       the soft dark shadow is what actually separates the ring from the canvas */
-    --glow-dial: drop-shadow(0 1px 2px rgba(20, 23, 26, 0.16));
-    --glow-node: 0 0 0 3px rgba(226, 146, 0, 0.16);
+    /* ---- depth: floating cards, soft diffuse shadows ---- */
+    --shadow-card: 0 10px 30px rgba(8, 30, 18, 0.08);
+    --shadow-item: 0 4px 14px rgba(8, 30, 18, 0.06);
+    --shadow-dock: 0 14px 34px rgba(8, 30, 18, 0.14);
+    --shadow-pop: 0 16px 36px rgba(8, 30, 18, 0.22);
+    --glow-dial: drop-shadow(0 1px 2px rgba(8, 30, 18, 0.16));
+    --glow-dial-hot: drop-shadow(0 1px 4px rgba(0, 163, 92, 0.4));
+    --glow-node: 0 0 0 3px rgba(0, 163, 92, 0.16);
     --glow-bar: none;
+    --glow-text: none;
     --dock-bg: rgba(255, 255, 255, 0.65);
-    --dock-edge: rgba(0, 0, 0, 0.08);
-    --dock-pill: rgba(0, 0, 0, 0.06);
+    --dock-edge: rgba(0, 80, 40, 0.10);
+    --dock-pill: rgba(0, 163, 92, 0.10);
     --maint-done-opacity: 0.72;
   }
 }
 
 /* forced LIGHT — identical tokens to the media block above */
 :root[data-theme="light"] {
-  --ink: #F6F4EF;
-  --ink-2: #EFECE4;
-  --paper: #16171A;
-  --paper-dim: rgba(22, 23, 26, 0.60);
-  --paper-faint: rgba(22, 23, 26, 0.50);
-  --meta: rgba(22, 23, 26, 0.68);
-  --canvas: radial-gradient(120% 60% at 50% -10%, #FFFDF7 0%, var(--ink) 55%);
+  --ink: #F2F7F3;
+  --ink-2: #EAF2EC;
+  --paper: #0B2417;
+  --paper-dim: rgba(11, 36, 23, 0.62);
+  --paper-faint: rgba(11, 36, 23, 0.48);
+  --meta: rgba(11, 36, 23, 0.66);
+  --canvas: radial-gradient(120% 60% at 50% -10%, #FBFEFB 0%, var(--ink) 55%);
   --card: #FFFFFF;
-  --card-edge: rgba(0, 0, 0, 0.06);
+  --card-edge: rgba(0, 80, 40, 0.08);
   --card-done: rgba(255, 255, 255, 0.55);
-  --card-done-edge: rgba(0, 0, 0, 0.05);
-  --btn-edge: rgba(0, 0, 0, 0.14);
-  --check-edge: rgba(22, 23, 26, 0.55);
-  --track: rgba(0, 0, 0, 0.10);
-  --bar-bg: rgba(0, 0, 0, 0.08);
-  --seg-bg: rgba(0, 0, 0, 0.045);
-  --seg-edge: rgba(0, 0, 0, 0.08);
+  --card-done-edge: rgba(0, 80, 40, 0.06);
+  --btn-edge: rgba(0, 80, 40, 0.16);
+  --check-edge: rgba(11, 36, 23, 0.5);
+  --track: rgba(0, 80, 40, 0.10);
+  --bar-bg: rgba(0, 80, 40, 0.10);
+  --seg-bg: rgba(0, 80, 40, 0.05);
+  --seg-edge: rgba(0, 80, 40, 0.09);
 
-  --amber: #E29200;
-  --amber-text: #8F5600;
-  --on-amber: #0A0B0D;
-  --amber-soft: rgba(226, 146, 0, 0.14);
-  --amber-edge: rgba(226, 146, 0, 0.35);
-  --amber-edge-strong: rgba(226, 146, 0, 0.50);
-  --strike: rgba(226, 146, 0, 0.75);
-  --good: #2E7D4F;
+  --amber: #00A35C;
+  --amber-hi: #00C853;
+  --amber-text: #00753F;
+  --on-amber: #FFFFFF;
+  --amber-soft: rgba(0, 163, 92, 0.10);
+  --amber-edge: rgba(0, 163, 92, 0.30);
+  --amber-edge-strong: rgba(0, 163, 92, 0.48);
+  --strike: rgba(0, 163, 92, 0.7);
+  --good: #00753F;
 
-  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-  --grain-opacity: 0.25;
-  --blob-bg: radial-gradient(60% 60% at 40% 40%, #EDE9E0 0%, #E4DFD3 70%);
-  --spine: linear-gradient(180deg, rgba(226, 146, 0, 0.6), rgba(0, 0, 0, 0.08));
-  --water-fill: linear-gradient(180deg, #8FC0E0 0%, #6AA0C8 100%);
-  --water-fill-edge: rgba(70, 130, 180, 0.35);
+  --grain-img: repeating-linear-gradient(0deg, rgba(0, 80, 40, 0.05) 0 1px, transparent 1px 3px);
+  --grain-opacity: 0.35;
+  --sweep: rgba(0, 80, 40, 0.04);
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #DFF0E5 0%, #CFE7D8 70%);
+  --spine: linear-gradient(180deg, rgba(0, 163, 92, 0.55), rgba(0, 80, 40, 0.08));
+  --water-fill: linear-gradient(180deg, #4CC98A 0%, #2EA468 100%);
+  --water-fill-edge: rgba(0, 130, 70, 0.35);
 
-  --shadow-card: 0 10px 30px rgba(20, 23, 26, 0.08);
-  --shadow-item: 0 4px 14px rgba(20, 23, 26, 0.06);
-  --shadow-dock: 0 14px 34px rgba(20, 23, 26, 0.14);
-  --shadow-pop: 0 16px 36px rgba(20, 23, 26, 0.22);
-  --glow-dial: drop-shadow(0 1px 2px rgba(20, 23, 26, 0.16));
-  --glow-node: 0 0 0 3px rgba(226, 146, 0, 0.16);
+  --shadow-card: 0 10px 30px rgba(8, 30, 18, 0.08);
+  --shadow-item: 0 4px 14px rgba(8, 30, 18, 0.06);
+  --shadow-dock: 0 14px 34px rgba(8, 30, 18, 0.14);
+  --shadow-pop: 0 16px 36px rgba(8, 30, 18, 0.22);
+  --glow-dial: drop-shadow(0 1px 2px rgba(8, 30, 18, 0.16));
+  --glow-dial-hot: drop-shadow(0 1px 4px rgba(0, 163, 92, 0.4));
+  --glow-node: 0 0 0 3px rgba(0, 163, 92, 0.16);
   --glow-bar: none;
+  --glow-text: none;
   --dock-bg: rgba(255, 255, 255, 0.65);
-  --dock-edge: rgba(0, 0, 0, 0.08);
-  --dock-pill: rgba(0, 0, 0, 0.06);
+  --dock-edge: rgba(0, 80, 40, 0.10);
+  --dock-pill: rgba(0, 163, 92, 0.10);
   --maint-done-opacity: 0.72;
 }
 
 /* forced DARK — the top-of-file :root values, re-declared so they beat the
    light media block on a light-mode system */
 :root[data-theme="dark"] {
-  --ink: #0A0B0D;
-  --ink-2: #101216;
-  --paper: #F2EFE9;
-  --paper-dim: rgba(242, 239, 233, 0.55);
-  --paper-faint: rgba(242, 239, 233, 0.28);
-  --meta: rgba(242, 239, 233, 0.28);
-  --canvas: radial-gradient(120% 60% at 50% -10%, #14161b 0%, var(--ink) 55%);
-  --card: rgba(255, 255, 255, 0.045);
-  --card-edge: rgba(255, 255, 255, 0.08);
-  --card-done: rgba(255, 255, 255, 0.02);
-  --card-done-edge: rgba(255, 255, 255, 0.04);
-  --btn-edge: rgba(255, 255, 255, 0.08);
-  --check-edge: rgba(255, 255, 255, 0.22);
-  --track: rgba(255, 255, 255, 0.07);
-  --bar-bg: rgba(255, 255, 255, 0.1);
-  --seg-bg: rgba(255, 255, 255, 0.05);
-  --seg-edge: rgba(255, 255, 255, 0.07);
+  --ink: #000000;
+  --ink-2: #050807;
+  --paper: #D9FBE9;
+  --paper-dim: rgba(217, 251, 233, 0.55);
+  --paper-faint: rgba(217, 251, 233, 0.30);
+  --meta: rgba(217, 251, 233, 0.34);
+  --canvas: radial-gradient(120% 60% at 50% -10%, #06110B 0%, var(--ink) 55%);
+  --card: rgba(0, 244, 142, 0.045);
+  --card-edge: rgba(0, 244, 142, 0.10);
+  --card-done: rgba(0, 244, 142, 0.02);
+  --card-done-edge: rgba(0, 244, 142, 0.05);
+  --btn-edge: rgba(0, 244, 142, 0.16);
+  --check-edge: rgba(217, 251, 233, 0.30);
+  --track: rgba(0, 244, 142, 0.08);
+  --bar-bg: rgba(0, 244, 142, 0.12);
+  --seg-bg: rgba(0, 244, 142, 0.05);
+  --seg-edge: rgba(0, 244, 142, 0.09);
 
-  --amber: #FFAB2E;
-  --amber-text: #FFAB2E;
-  --on-amber: #0A0B0D;
-  --amber-soft: rgba(255, 171, 46, 0.14);
-  --amber-edge: rgba(255, 171, 46, 0.25);
-  --amber-edge-strong: rgba(255, 171, 46, 0.45);
-  --strike: rgba(255, 171, 46, 0.5);
-  --good: #7BD88F;
+  --amber: #00F48E;
+  --amber-hi: #00FF3C;
+  --amber-text: #00F48E;
+  --on-amber: #000000;
+  --amber-soft: rgba(0, 244, 142, 0.10);
+  --amber-edge: rgba(0, 244, 142, 0.24);
+  --amber-edge-strong: rgba(0, 244, 142, 0.45);
+  --strike: rgba(0, 244, 142, 0.5);
+  --good: #00F48E;
 
-  --grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-img: repeating-linear-gradient(0deg, rgba(0, 244, 142, 0.05) 0 1px, transparent 1px 3px);
   --grain-opacity: 0.5;
-  --blob-bg: radial-gradient(60% 60% at 40% 40%, #1d2026 0%, #14161a 70%);
-  --spine: linear-gradient(180deg, rgba(255, 171, 46, 0.5), rgba(255, 255, 255, 0.06));
-  --water-fill: linear-gradient(180deg, #3D6B8A 0%, #2C4E66 100%);
-  --water-fill-edge: rgba(120, 180, 220, 0.35);
+  --sweep: rgba(0, 244, 142, 0.055);
+  --blob-bg: radial-gradient(60% 60% at 40% 40%, #0A1F14 0%, #04100A 70%);
+  --spine: linear-gradient(180deg, rgba(0, 244, 142, 0.5), rgba(217, 251, 233, 0.06));
+  --water-fill: linear-gradient(180deg, #0A8A50 0%, #054A2C 100%);
+  --water-fill-edge: rgba(0, 244, 142, 0.35);
 
-  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 14px 34px rgba(0, 0, 0, 0.55);
   --shadow-item: none;
-  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.5);
-  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.5);
-  --glow-dial: drop-shadow(0 0 6px rgba(255, 171, 46, 0.45));
-  --glow-node: 0 0 10px rgba(255, 171, 46, 0.5);
-  --glow-bar: 0 0 8px rgba(255, 171, 46, 0.3);
-  --dock-bg: rgba(16, 18, 22, 0.72);
-  --dock-edge: rgba(255, 255, 255, 0.09);
-  --dock-pill: rgba(255, 255, 255, 0.09);
+  --shadow-dock: 0 18px 40px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 16px 36px rgba(0, 0, 0, 0.6);
+  --glow-dial: drop-shadow(0 0 6px rgba(0, 244, 142, 0.45));
+  --glow-dial-hot: drop-shadow(0 0 11px rgba(0, 255, 60, 0.6));
+  --glow-node: 0 0 10px rgba(0, 244, 142, 0.55);
+  --glow-bar: 0 0 8px rgba(0, 244, 142, 0.35);
+  --glow-text: 0 0 18px rgba(0, 244, 142, 0.35);
+  --dock-bg: rgba(3, 8, 6, 0.78);
+  --dock-edge: rgba(0, 244, 142, 0.14);
+  --dock-pill: rgba(0, 244, 142, 0.10);
   --maint-done-opacity: 0.55;
 }
 
@@ -618,8 +666,10 @@ main { max-width: 520px; margin: 0 auto; padding: 0 18px; }
 @media (prefers-reduced-motion: reduce) {
   .blob { animation: none; }
   .streak-dot { animation: none; }
+  .grain::after { animation: none; opacity: 0; }
+  #date-line::after { animation: none; opacity: 1; }
+  .dial-fill { animation: none; filter: var(--glow-dial); transition: stroke-dashoffset 200ms ease; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .dial-fill { transition: stroke-dashoffset 200ms ease; }
   .task, .maint, .dock-btn, .ghost-btn, .amber-btn { transition-duration: 80ms; }
   .task:active, .maint:active, .dock-btn:active { transform: none; }
   .rec-btn.recording .rec-ring { animation: none; opacity: 0.55; }
