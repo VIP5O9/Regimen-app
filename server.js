@@ -183,9 +183,14 @@ const isDue = (time, now) => {
 function tick() {
   rolloverIfNeeded();
   const now = hhmm();
+  // Only hit disk when the tick actually fired something. The scheduler runs
+  // every 30s, so an unconditional write was ~2,880 pointless writes/day of
+  // pure flash wear on the machine hosting this.
+  let dirty = false;
   for (const t of allTasks()) {
     if (isDue(t.time, now) && !state.fired[t.id] && !state.checks[t.id]) {
       state.fired[t.id] = true;
+      dirty = true;
       push(t.title, t.detail || 'On the regimen. Handle it.', t.id).catch(console.error);
     }
   }
@@ -193,6 +198,7 @@ function tick() {
     const key = 'water_' + n;
     if (isDue(n, now) && !state.fired[key] && state.water < regimen.waterTarget) {
       state.fired[key] = true;
+      dirty = true;
       push('Water check', `${state.water}/${regimen.waterTarget} glasses. Drink one now.`, key).catch(console.error);
     }
   }
@@ -200,10 +206,11 @@ function tick() {
     const key = 'maint_' + m.id;
     if ((m.due === todayStr() || m.overdue) && isDue(m.time, now) && !state.fired[key]) {
       state.fired[key] = true;
+      dirty = true;
       push(m.title, m.detail || 'Maintenance due today.', key).catch(console.error);
     }
   }
-  writeJson('state.json', state);
+  if (dirty) writeJson('state.json', state);
 }
 setInterval(tick, 30000);
 process.on('unhandledRejection', (e) => console.error('unhandled', e));

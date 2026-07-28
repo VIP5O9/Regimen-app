@@ -1,4 +1,4 @@
-/* REGIMEN security — the two checks that stand between the API and the network.
+/* REGIMEN security — the checks that stand between the API and the network.
 
    1. requireToken: the API checks off tasks, writes audio files to disk and
       sends push. It is never open. Static shell files stay public because you
@@ -6,7 +6,10 @@
    2. assertSafePushEndpoint: /api/subscribe hands its endpoint URL straight to
       web-push, which then POSTs to it. Without this check anyone who can reach
       the server can aim those requests at localhost or a cloud metadata
-      service — a plain SSRF relay. */
+      service — a plain SSRF relay.
+   3. Auth-failure rate limiting: the token is 16+ chars, so guessing is
+      already impractical. This caps the cost of someone hammering the gate
+      anyway and keeps a hostile network from flooding the logs. */
 const crypto = require('crypto');
 const net = require('net');
 
@@ -29,8 +32,30 @@ function presentedToken(req) {
   return '';
 }
 
+/* ---------- auth-failure rate limiting ---------- */
+const FAIL_WINDOW_MS = 60_000;
+const FAIL_LIMIT = 20;          // 20 wrong tokens per minute per IP, then 429
+const failures = new Map();     // ip -> { count, windowStart }
+
+function registerFailure(ip) {
+  const now = Date.now();
+  const rec = failures.get(ip);
+  if (!rec || now - rec.windowStart > FAIL_WINDOW_MS) {
+    failures.set(ip, { count: 1, windowStart: now });
+  } else {
+    rec.count += 1;
+  }
+  // keep the map bounded if a botnet sprays from thousands of addresses
+  if (failures.size > 10_000) failures.clear();
+  return failures.get(ip).count > FAIL_LIMIT;
+}
+
 const requireToken = (expected) => (req, res, next) => {
   if (tokenMatches(presentedToken(req), expected)) return next();
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  if (registerFailure(ip)) {
+    return res.status(429).json({ ok: false, error: 'too many failed attempts — slow down' });
+  }
   res.status(401).json({ ok: false, error: 'unauthorized' });
 };
 
