@@ -6,6 +6,11 @@
       "name": "regimen-server",
       "command": "npm start",
       "description": "REGIMEN PWA + API server on port 3117. Startup logs print the sign-in URL (with the auto-generated access token) needed to reach /api/* routes."
+    },
+    {
+      "name": "regimen-readiness",
+      "command": "node scripts/healthcheck.js",
+      "description": "Waits for the server to accept connections, then prints a readiness banner reporting whether Web Push is armed (REGIMEN_CONTACT set) or disabled. Exits 0 once ready, 1 on timeout."
     }
   ],
   "ports": [
