@@ -30,10 +30,13 @@ const DATA = process.env.REGIMEN_DATA_DIR
   : path.join(ROOT, 'data');
 fs.mkdirSync(DATA, { recursive: true });
 
+const IS_VERCEL = Boolean(process.env.VERCEL);
+
 /* ---------- access token ----------
    The API writes files and sends push, so it is never left open. Set
    REGIMEN_TOKEN to pin one; otherwise a random token is generated once and
-   persisted to data/token.json (gitignored). Printed on boot either way. */
+   persisted to data/token.json (gitignored). Printed on boot either way.
+   On Vercel, REGIMEN_TOKEN is required — there is no persistent disk. */
 function resolveToken() {
   const fromEnv = (process.env.REGIMEN_TOKEN || '').trim();
   if (fromEnv) {
@@ -41,6 +44,12 @@ function resolveToken() {
       throw new Error('REGIMEN_TOKEN must be at least 16 characters — short tokens are guessable.');
     }
     return fromEnv;
+  }
+  if (IS_VERCEL) {
+    throw new Error(
+      'REGIMEN_TOKEN is required on Vercel. Set it in Project Settings → Environment Variables ' +
+      '(16+ characters). Open https://<your-app>.vercel.app/?token=<value> once per device.'
+    );
   }
   const file = path.join(DATA, 'token.json');
   try {
@@ -76,5 +85,7 @@ module.exports = {
   VOICE_DIR: process.env.REGIMEN_VOICE_DIR
     ? path.resolve(ROOT, process.env.REGIMEN_VOICE_DIR)
     : path.join(DATA, 'voice-inbox'),
-  VOICE_ENABLED: process.env.REGIMEN_VOICE !== 'off',
+  // Whisper weights exceed Vercel's serverless limits — voice is local-only.
+  VOICE_ENABLED: process.env.REGIMEN_VOICE !== 'off' && !IS_VERCEL,
+  IS_VERCEL,
 };
