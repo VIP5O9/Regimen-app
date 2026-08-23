@@ -11,7 +11,40 @@ Design: **Midnight Editorial** — ink black, serif headlines, amber momentum ar
 
 ---
 
-## Quick start
+## Deploy on Vercel
+
+REGIMEN runs on Vercel with HTTPS out of the box — ideal for installing the PWA
+on your phone and arming push reminders without Tailscale or a tunnel.
+
+### One-time setup
+
+1. **Fork or import** this repo into [Vercel](https://vercel.com/new).
+2. **Add Upstash Redis** from the [Vercel Marketplace](https://vercel.com/marketplace?category=storage&search=redis) and connect it to your project. This injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically.
+3. **Set environment variables** in Project Settings → Environment Variables:
+
+| Variable | Required | What it does |
+|----------|----------|--------------|
+| `REGIMEN_TOKEN` | **Yes** | API access token (16+ characters). Open `https://<your-app>.vercel.app/?token=<value>` once per device. |
+| `REGIMEN_CONTACT` | For push | VAPID subject — `mailto:you@example.com` or `https://yoursite.com`. |
+| `CRON_SECRET` | Auto | Vercel sets this when cron jobs are enabled. |
+
+4. **Deploy.** Vercel runs a cron job every minute to fire reminders (replaces the local `setInterval` scheduler).
+
+### Vercel vs self-hosted
+
+| Feature | Self-hosted | Vercel |
+|---------|-------------|--------|
+| HTTPS | You provide (Tailscale, tunnel, etc.) | Built-in |
+| Storage | `data/*.json` on disk | Upstash Redis |
+| Reminders | In-process scheduler | Vercel Cron (every minute) |
+| Voice memos | Full whisper transcription | Disabled (model too large for serverless) |
+| Data location | Your machine | Upstash region you choose |
+
+Voice memos and local whisper transcription remain available when you run `npm start` on your own machine.
+
+---
+
+## Quick start (self-hosted)
 
 Needs [Node.js](https://nodejs.org) 18 or newer.
 
